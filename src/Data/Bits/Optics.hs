@@ -29,7 +29,10 @@ import Data.Bits (Bits (..), FiniteBits (..))
 import Data.Word (Word8, Word16, Word32)
 
 -- Libraries.
-import Optics.Core (Lens', Iso', lens, iso, view, set)
+import Optics.Core (Lens', Iso', lens, iso, view, set, review)
+
+-- Package.
+import Data.Word.Optics (word8ToWord16, word8ToWord32)
 
 
 -- $setup
@@ -207,7 +210,7 @@ word16BytesLe = iso from to
         from n = (view (byteAt 0) n, view (byteAt 1) n)
 
         to :: (Word8, Word8) -> Word16
-        to (m, n) = fromIntegral m .|. shiftL (fromIntegral n) 8
+        to (m, n) = let h = review word8ToWord16 in h m .|. shiftL (h n) 8
 
 {- | Isomorphism between 'Word16' and tuples of 'Word8'.
 
@@ -228,7 +231,7 @@ word16BytesBe = iso from to
         from n = (view (byteAt 1) n, view (byteAt 0) n)
 
         to :: (Word8, Word8) -> Word16
-        to (m, n) = fromIntegral n .|. shiftL (fromIntegral m) 8
+        to (m, n) = let h = review word8ToWord16 in h n .|. shiftL (h m) 8
 
 {- | Isomorphism between 'Word32' and 4-tuples of 'Word8'.
 
@@ -249,11 +252,11 @@ word32BytesLe = iso from to
         from n = (view (byteAt 0) n, view (byteAt 1) n, view (byteAt 2) n, view (byteAt 3) n)
 
         to :: (Word8, Word8, Word8, Word8) -> Word32
-        to (m, n, o, p)
-            =   fromIntegral m
-            .|. shiftL (fromIntegral n) 8
-            .|. shiftL (fromIntegral o) 16
-            .|. shiftL (fromIntegral p) 24
+        to (m, n, o, p) = let h = review word8ToWord32 in
+                h m
+            .|. shiftL (h n) 8
+            .|. shiftL (h o) 16
+            .|. shiftL (h p) 24
 
 {- | Isomorphism between 'Word32' and 4-tuples of 'Word8'.
 
@@ -274,8 +277,8 @@ word32BytesBe = iso from to
         from n = (view (byteAt 3) n, view (byteAt 2) n, view (byteAt 1) n, view (byteAt 0) n)
 
         to :: (Word8, Word8, Word8, Word8) -> Word32
-        to (m, n, o, p)
-            =   fromIntegral p
-            .|. shiftL (fromIntegral o) 8
-            .|. shiftL (fromIntegral n) 16
-            .|. shiftL (fromIntegral m) 24
+        to (m, n, o, p) =  let h = review word8ToWord32 in
+                h p
+            .|. shiftL (h o) 8
+            .|. shiftL (h n) 16
+            .|. shiftL (h m) 24
