@@ -11,6 +11,8 @@ license-file:       LICENSE
 maintainer:         grodrigues.math@gmail.com
 copyright:          2026 G. Rodrigues
 build-type:         Simple
+tested-with:
+    GHC == {9.10.3}
 extra-doc-files:
     LICENSE
     README.md
@@ -46,6 +48,7 @@ library
         -- Libraries.
         optics-core >= 0.4.2 && <0.4.3,
         containers >=0.7 && <0.8,
+        vector >=0.13 && <0.14,
     other-modules:
     exposed-modules:
         Data.Word.Optics
@@ -54,3 +57,4 @@ library
         Data.Bits.Optics
         Data.List.Optics
         Data.Sequence.Optics
+        Data.Vector.Optics
