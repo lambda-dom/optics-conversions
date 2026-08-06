@@ -1,10 +1,10 @@
 {- |
-Module: Data.List.Optics
+Module: Data.List.NonEmpty.Optics
 
-Optics for conversions from and to lists.
+Optics for conversions from and to t'NonEmpty'.
 -}
 
-module Data.List.Optics (
+module Data.List.NonEmpty.Optics (
     -- * Prisms.
     nonEmptyToList,
 ) where
