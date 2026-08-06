@@ -45,9 +45,12 @@ library
         base >=4.20 && <4.21,
         -- Libraries.
         optics-core >= 0.4.2 && <0.4.3,
+        containers >=0.7 && <0.8,
     other-modules:
     exposed-modules:
         Data.Word.Optics
         Data.Int.Optics
         Data.Enum.Optics
         Data.Bits.Optics
+        Data.List.Optics
+        Data.Sequence.Optics

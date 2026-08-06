@@ -337,4 +337,3 @@ note(s):
 {-# INLINE word64ToInteger #-}
 word64ToInteger :: Prism' Integer Word64
 word64ToInteger = prism' fromIntegral toIntegralSized
-

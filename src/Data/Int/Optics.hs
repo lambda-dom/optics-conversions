@@ -98,6 +98,7 @@ note(s):
 int64ToInt :: Iso' Int64 Int
 int64ToInt = iso fromIntegral fromIntegral
 
+
 {- | Prism for conversion between 'Int8' and 'Int16'.
 
 note(s):

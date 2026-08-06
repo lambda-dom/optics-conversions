@@ -97,6 +97,8 @@ bitAt i = lens project update
 
 note(s):
 
+    * The lens is only valid if the integral type has 8 bits or more.
+
     * The result is undefined if the argument is negative or larger than the number of bytes in the
     type.
 -}
