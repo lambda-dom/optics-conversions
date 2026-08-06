@@ -82,7 +82,7 @@ note(s):
     * The result is undefined if the argument is negative or larger than the number of bits in the
     type.
 -}
-{-# INLINEABLE bitAt #-}
+{-# INLINE bitAt #-}
 bitAt :: forall a . Bits a => Int -> Lens' a Bool
 bitAt i = lens project update
     where
@@ -100,7 +100,7 @@ note(s):
     * The result is undefined if the argument is negative or larger than the number of bytes in the
     type.
 -}
-{-# INLINEABLE byteAt #-}
+{-# INLINE byteAt #-}
 byteAt :: forall a . (Integral a, Bits a) => Int -> Lens' a Word8
 byteAt i = lens project update
     where
@@ -122,7 +122,7 @@ note(s):
 >>> view bitsLe 0x04
 (False,False,True,False,False,False,False,False)
 -}
-{-# INLINEABLE bitsLe #-}
+{-# INLINE bitsLe #-}
 bitsLe :: Iso' Word8 (Bool, Bool, Bool, Bool, Bool, Bool, Bool, Bool)
 bitsLe = iso from to
     where
@@ -163,7 +163,7 @@ note(s):
 >>> view bitsBe 0x04
 (False,False,False,False,False,True,False,False)
 -}
-{-# INLINEABLE bitsBe #-}
+{-# INLINE bitsBe #-}
 bitsBe :: Iso' Word8 (Bool, Bool, Bool, Bool, Bool, Bool, Bool, Bool)
 bitsBe = iso from to
     where
@@ -204,7 +204,7 @@ note(s):
 >>> view word16BytesLe 0xff00
 (0,255)
 -}
-{-# INLINEABLE word16BytesLe #-}
+{-# INLINE word16BytesLe #-}
 word16BytesLe :: Iso' Word16 (Word8, Word8)
 word16BytesLe = iso from to
     where
@@ -225,7 +225,7 @@ note(s):
 >>> view word16BytesBe 0xff00
 (255,0)
 -}
-{-# INLINEABLE word16BytesBe #-}
+{-# INLINE word16BytesBe #-}
 word16BytesBe :: Iso' Word16 (Word8, Word8)
 word16BytesBe = iso from to
     where
@@ -246,7 +246,7 @@ note(s):
 >>> view word32BytesLe 0xff00
 (0,255,0,0)
 -}
-{-# INLINEABLE word32BytesLe #-}
+{-# INLINE word32BytesLe #-}
 word32BytesLe :: Iso' Word32 (Word8, Word8, Word8, Word8)
 word32BytesLe = iso from to
     where
@@ -271,7 +271,7 @@ note(s):
 >>> view word32BytesBe 0xff00
 (0,0,255,0)
 -}
-{-# INLINEABLE word32BytesBe #-}
+{-# INLINE word32BytesBe #-}
 word32BytesBe :: Iso' Word32 (Word8, Word8, Word8, Word8)
 word32BytesBe = iso from to
     where
@@ -296,7 +296,7 @@ note(s):
 >>> view word64BytesLe 0xff00
 (0,255,0,0,0,0,0,0)
 -}
-{-# INLINEABLE word64BytesLe #-}
+{-# INLINE word64BytesLe #-}
 word64BytesLe :: Iso' Word64 (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
 word64BytesLe = iso from to
     where
@@ -334,7 +334,7 @@ note(s):
 >>> view word64BytesBe 0xff00
 (0,0,0,0,0,0,255,0)
 -}
-{-# INLINEABLE word64BytesBe #-}
+{-# INLINE word64BytesBe #-}
 word64BytesBe :: Iso' Word64 (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
 word64BytesBe = iso from to
     where
