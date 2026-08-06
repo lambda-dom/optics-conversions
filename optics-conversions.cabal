@@ -44,9 +44,9 @@ library
         -- GHC >= 9.10 && < 9.12
         base >=4.20 && <4.21,
         -- Libraries.
-        -- optics-core >= 0.4.2 && <0.4.3,
+        optics-core >= 0.4.2 && <0.4.3,
     other-modules:
     exposed-modules:
-        -- Data.Word.Optics
-        -- Data.Enum.Optics
-        -- Data.Bits.Optics
+        Data.Word.Optics
+        Data.Enum.Optics
+        Data.Bits.Optics
