@@ -11,6 +11,7 @@ module Data.Int.Optics (
     int32ToWord32,
     int64ToWord64,
     intToWord,
+    int64ToInt,
 
     -- * Prisms for conversion between integral, signed primitive types.
 ) where
@@ -73,4 +74,17 @@ note(s):
 {-# INLINE intToWord #-}
 intToWord :: Iso' Int Word
 intToWord = iso fromIntegral fromIntegral
+
+{- | Isomorphism for conversion between 'Int64' and 'Int'.
+
+note(s):
+
+    * The isomorphism is only valid if 'Int' has 64 bits. This is the common case, but is not
+    guaranteed by the Haskell report.
+
+    * Uses 'fromIntegral' for both directions.
+-}
+{-# INLINE int64ToInt #-}
+int64ToInt :: Iso' Int64 Int
+int64ToInt = iso fromIntegral fromIntegral
 
