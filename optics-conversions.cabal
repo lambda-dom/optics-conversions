@@ -1,0 +1,52 @@
+cabal-version:      3.0
+name:               optics-conversions
+version:            0.1.0.0
+synopsis:           Optics for safe conversions between types.
+description:        Please see the README on GitHub at <https://github.com/lambda-dom/optics-conversions#readme>
+category:           Data
+homepage:           https://github.com/lambda-dom/optics-conversions#readme
+author:             lambda-dom
+license:            BSD-3-Clause
+license-file:       LICENSE
+maintainer:         grodrigues.math@gmail.com
+copyright:          2026 G. Rodrigues
+build-type:         Simple
+extra-doc-files:
+    LICENSE
+    README.md
+    CHANGELOG.md
+
+source-repository head
+    type: git
+    location: https://github.com/lambda-dom/optics-conversions
+
+library
+    default-language: GHC2021
+    default-extensions:
+        RequiredTypeArguments
+    ghc-options:
+        -Wall
+        -Wcompat
+        -Widentities
+        -Wincomplete-record-updates
+        -Wincomplete-uni-patterns
+        -Wmissing-export-lists
+        -Wmissing-home-modules
+        -Wpartial-fields
+        -Wredundant-constraints
+        -Wmissing-deriving-strategies
+        -Wunused-packages
+        -- Prepare for dependent types.
+        -Wterm-variable-capture
+    hs-source-dirs:
+        src
+    build-depends:
+        -- GHC >= 9.10 && < 9.12
+        base >=4.20 && <4.21,
+        -- Libraries.
+        -- optics-core >= 0.4.2 && <0.4.3,
+    other-modules:
+    exposed-modules:
+        -- Data.Word.Optics
+        -- Data.Enum.Optics
+        -- Data.Bits.Optics
