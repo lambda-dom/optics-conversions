@@ -20,19 +20,21 @@ module Data.Bits.Optics (
     word16BytesBe,
     word32BytesLe,
     word32BytesBe,
+    word64BytesLe,
+    word64BytesBe,
 ) where
 
 
 -- Imports.
 -- Base.
 import Data.Bits (Bits (..), FiniteBits (..))
-import Data.Word (Word8, Word16, Word32)
+import Data.Word (Word8, Word16, Word32, Word64)
 
 -- Libraries.
 import Optics.Core (Lens', Iso', lens, iso, view, set, review)
 
 -- Package.
-import Data.Word.Optics (word8ToWord16, word8ToWord32)
+import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
 
 
 -- $setup
@@ -282,3 +284,79 @@ word32BytesBe = iso from to
             .|. shiftL (h o) 8
             .|. shiftL (h n) 16
             .|. shiftL (h m) 24
+
+{- | Isomorphism between 'Word64' and 8-tuples of 'Word8'.
+
+note(s):
+
+    * The order of the bytes is little-endian, that is, least to most significant.
+
+=== __Examples:__
+
+>>> view word64BytesLe 0xff00
+(0,255,0,0,0,0,0,0)
+-}
+{-# INLINEABLE word64BytesLe #-}
+word64BytesLe :: Iso' Word64 (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
+word64BytesLe = iso from to
+    where
+        from :: Word64 -> (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
+        from n = (
+                    view (byteAt 0) n,
+                    view (byteAt 1) n,
+                    view (byteAt 2) n,
+                    view (byteAt 3) n,
+                    view (byteAt 4) n,
+                    view (byteAt 5) n,
+                    view (byteAt 6) n,
+                    view (byteAt 7) n
+                )
+
+        to :: (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8) -> Word64
+        to (m, n, o, p, q, r, s, t) = let h = review word8ToWord64 in
+                h m
+            .|. shiftL (h n) 8
+            .|. shiftL (h o) 16
+            .|. shiftL (h p) 24
+            .|. shiftL (h q) 32
+            .|. shiftL (h r) 40
+            .|. shiftL (h s) 48
+            .|. shiftL (h t) 56
+
+{- | Isomorphism between 'Word64' and 8-tuples of 'Word8'.
+
+note(s):
+
+    * The order of the bytes is big-endian, that is, most to least significant.
+
+=== __Examples:__
+
+>>> view word64BytesBe 0xff00
+(0,0,0,0,0,0,255,0)
+-}
+{-# INLINEABLE word64BytesBe #-}
+word64BytesBe :: Iso' Word64 (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
+word64BytesBe = iso from to
+    where
+        from :: Word64 -> (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
+        from n = (
+                    view (byteAt 7) n,
+                    view (byteAt 5) n,
+                    view (byteAt 5) n,
+                    view (byteAt 4) n,
+                    view (byteAt 3) n,
+                    view (byteAt 2) n,
+                    view (byteAt 1) n,
+                    view (byteAt 0) n
+                )
+
+        to :: (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8) -> Word64
+        to (m, n, o, p, q, r, s, t) =  let h = review word8ToWord64 in
+                h t
+            .|. shiftL (h s) 8
+            .|. shiftL (h r) 16
+            .|. shiftL (h q) 24
+            .|. shiftL (h p) 32
+            .|. shiftL (h o) 40
+            .|. shiftL (h n) 48
+            .|. shiftL (h m) 56
