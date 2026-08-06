@@ -13,7 +13,7 @@ module Data.Word.Optics (
     wordToInt,
     word64ToWord,
 
-    -- * Prisms for conversion between integral, primitive types.
+    -- * Prisms for conversion between integral, unsigned primitive types.
     word8ToWord16,
     word8ToWord32,
     word8ToWord64,
@@ -85,7 +85,7 @@ note(s):
 wordToInt :: Iso' Word Int
 wordToInt = iso fromIntegral fromIntegral
 
-{- | Isomorphism for conversion between 'Word64' and 'Int64'.
+{- | Isomorphism for conversion between 'Word64' and 'Word'.
 
 note(s):
 
