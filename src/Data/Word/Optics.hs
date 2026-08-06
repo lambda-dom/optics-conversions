@@ -41,7 +41,7 @@ note(s):
 
     * Uses 'fromIntegral' for both directions.
 -}
-{-# INLINEABLE word8ToInt8 #-}
+{-# INLINE word8ToInt8 #-}
 word8ToInt8 :: Iso' Word8 Int8
 word8ToInt8 = iso fromIntegral fromIntegral
 
@@ -51,7 +51,7 @@ note(s):
 
     * Uses 'fromIntegral' for both directions.
 -}
-{-# INLINEABLE word16ToInt16 #-}
+{-# INLINE word16ToInt16 #-}
 word16ToInt16 :: Iso' Word16 Int16
 word16ToInt16 = iso fromIntegral fromIntegral
 
@@ -61,7 +61,7 @@ note(s):
 
     * Uses 'fromIntegral' for both directions.
 -}
-{-# INLINEABLE word32ToInt32 #-}
+{-# INLINE word32ToInt32 #-}
 word32ToInt32 :: Iso' Word32 Int32
 word32ToInt32 = iso fromIntegral fromIntegral
 
@@ -71,7 +71,7 @@ note(s):
 
     * Uses 'fromIntegral' for both directions.
 -}
-{-# INLINEABLE word64ToInt64 #-}
+{-# INLINE word64ToInt64 #-}
 word64ToInt64 :: Iso' Word64 Int64
 word64ToInt64 = iso fromIntegral fromIntegral
 
@@ -81,7 +81,7 @@ note(s):
 
     * Uses 'fromIntegral' for both directions.
 -}
-{-# INLINEABLE wordToInt #-}
+{-# INLINE wordToInt #-}
 wordToInt :: Iso' Word Int
 wordToInt = iso fromIntegral fromIntegral
 
@@ -94,7 +94,7 @@ note(s):
 
     * Uses 'fromIntegral' for both directions.
 -}
-{-# INLINEABLE word64ToWord #-}
+{-# INLINE word64ToWord #-}
 word64ToWord :: Iso' Word64 Word
 word64ToWord = iso fromIntegral fromIntegral
 
@@ -105,7 +105,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word8ToWord16 #-}
+{-# INLINE word8ToWord16 #-}
 word8ToWord16 :: Prism' Word16 Word8
 word8ToWord16 = prism' fromIntegral toIntegralSized
 
@@ -115,7 +115,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word8ToWord32 #-}
+{-# INLINE word8ToWord32 #-}
 word8ToWord32 :: Prism' Word32 Word8
 word8ToWord32 = prism' fromIntegral toIntegralSized
 
@@ -125,7 +125,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word8ToWord64 #-}
+{-# INLINE word8ToWord64 #-}
 word8ToWord64 :: Prism' Word64 Word8
 word8ToWord64 = prism' fromIntegral toIntegralSized
 
@@ -135,7 +135,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word8ToWord #-}
+{-# INLINE word8ToWord #-}
 word8ToWord :: Prism' Word Word8
 word8ToWord = prism' fromIntegral toIntegralSized
 
@@ -145,7 +145,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word16ToWord32 #-}
+{-# INLINE word16ToWord32 #-}
 word16ToWord32 :: Prism' Word32 Word16
 word16ToWord32 = prism' fromIntegral toIntegralSized
 
@@ -155,7 +155,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word16ToWord64 #-}
+{-# INLINE word16ToWord64 #-}
 word16ToWord64 :: Prism' Word64 Word16
 word16ToWord64 = prism' fromIntegral toIntegralSized
 
@@ -165,7 +165,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word16ToWord #-}
+{-# INLINE word16ToWord #-}
 word16ToWord :: Prism' Word Word16
 word16ToWord = prism' fromIntegral toIntegralSized
 
@@ -175,7 +175,7 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word32ToWord64 #-}
+{-# INLINE word32ToWord64 #-}
 word32ToWord64 :: Prism' Word64 Word32
 word32ToWord64 = prism' fromIntegral toIntegralSized
 
@@ -188,6 +188,6 @@ note(s):
 
     * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
 -}
-{-# INLINEABLE word32ToWord #-}
+{-# INLINE word32ToWord #-}
 word32ToWord :: Prism' Word Word32
 word32ToWord = prism' fromIntegral toIntegralSized
