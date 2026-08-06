@@ -129,7 +129,7 @@ note(s):
 word8ToWord64 :: Prism' Word64 Word8
 word8ToWord64 = prism' fromIntegral toIntegralSized
 
-{- | Prism for conversion between 'Word8' and 'Word64'.
+{- | Prism for conversion between 'Word8' and 'Word'.
 
 note(s):
 
@@ -159,7 +159,7 @@ note(s):
 word16ToWord64 :: Prism' Word64 Word16
 word16ToWord64 = prism' fromIntegral toIntegralSized
 
-{- | Prism for conversion between 'Word16' and 'Word64'.
+{- | Prism for conversion between 'Word16' and 'Word'.
 
 note(s):
 
@@ -179,7 +179,7 @@ note(s):
 word32ToWord64 :: Prism' Word64 Word32
 word32ToWord64 = prism' fromIntegral toIntegralSized
 
-{- | Prism for conversion between 'Word32' and 'Word64'.
+{- | Prism for conversion between 'Word32' and 'Word'.
 
 note(s):
 

@@ -14,6 +14,15 @@ module Data.Int.Optics (
     int64ToInt,
 
     -- * Prisms for conversion between integral, signed primitive types.
+    int8ToInt16,
+    int8ToInt32,
+    int8ToInt64,
+    int8ToInt,
+    int16ToInt32,
+    int16ToInt64,
+    int16ToInt,
+    int32ToInt64,
+    int32ToInt,
 ) where
 
 -- Imports.
@@ -22,7 +31,8 @@ import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
 
 -- Libraries.
-import Optics.Core (Iso', iso)
+import Optics.Core (Iso', Prism', iso, prism')
+import Data.Bits (toIntegralSized)
 
 
 {- | Isomorphism for conversion between 'Int8' and 'Word8'.
@@ -88,3 +98,95 @@ note(s):
 int64ToInt :: Iso' Int64 Int
 int64ToInt = iso fromIntegral fromIntegral
 
+{- | Prism for conversion between 'Int8' and 'Int16'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int8ToInt16 #-}
+int8ToInt16 :: Prism' Int16 Int8
+int8ToInt16 = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int8' and 'Int32'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int8ToInt32 #-}
+int8ToInt32 :: Prism' Int32 Int8
+int8ToInt32 = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int8' and 'Int64'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int8ToInt64 #-}
+int8ToInt64 :: Prism' Int64 Int8
+int8ToInt64 = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int8' and 'Int'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int8ToInt #-}
+int8ToInt :: Prism' Int Int8
+int8ToInt = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int16' and 'Int32'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int16ToInt32 #-}
+int16ToInt32 :: Prism' Int32 Int16
+int16ToInt32 = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int16' and 'Int64'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int16ToInt64 #-}
+int16ToInt64 :: Prism' Int64 Int16
+int16ToInt64 = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int16' and 'Int'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int16ToInt #-}
+int16ToInt :: Prism' Int Int16
+int16ToInt = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int32' and 'Int64'.
+
+note(s):
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int32ToInt64 #-}
+int32ToInt64 :: Prism' Int64 Int32
+int32ToInt64 = prism' fromIntegral toIntegralSized
+
+{- | Prism for conversion between 'Int32' and 'Int'.
+
+note(s):
+
+    * This prism is only valid if 'Int' has 32 bits or more. This is the common case, but is not
+    guaranteed by the Haskell report.
+
+    * Uses 'fromIntegral' for the lossless conversion and 'toIntegralSized' for the other direction.
+-}
+{-# INLINE int32ToInt #-}
+int32ToInt :: Prism' Int Int32
+int32ToInt = prism' fromIntegral toIntegralSized
