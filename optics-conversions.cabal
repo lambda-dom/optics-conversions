@@ -48,5 +48,6 @@ library
     other-modules:
     exposed-modules:
         Data.Word.Optics
+        Data.Int.Optics
         Data.Enum.Optics
         Data.Bits.Optics
