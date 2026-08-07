@@ -10,6 +10,7 @@ module Data.Int.Optics (
     int16ToWord16,
     int32ToWord32,
     int64ToWord64,
+    int64ToInt,
     intToWord,
 
     -- * Prisms for conversion between integral, signed primitive types.
@@ -73,6 +74,17 @@ note(s):
 {-# INLINE int64ToWord64 #-}
 int64ToWord64 :: Iso' Int64 Word64
 int64ToWord64 = iso fromIntegral fromIntegral
+
+{- | Isomorphism for conversion between 'Int64' and 'Int'.
+
+note(s):
+
+    * This isomorphism is only valid in platforms where 'Int' has 64 bits.
+    * Uses 'fromIntegral' for both directions.
+-}
+{-# INLINE int64ToInt #-}
+int64ToInt :: Iso' Int64 Int
+int64ToInt = iso fromIntegral fromIntegral
 
 {- | Isomorphism for conversion between 'Int' and 'Word'.
 
