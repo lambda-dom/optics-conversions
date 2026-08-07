@@ -1,7 +1,7 @@
 cabal-version:      3.0
 name:               optics-conversions
 version:            0.1.0.0
-synopsis:           Optics for safe conversions between types.
+synopsis:           Optics for safe conversions involving integral, primitive types.
 description:        Please see the README on GitHub at <https://github.com/lambda-dom/optics-conversions#readme>
 category:           Data
 homepage:           https://github.com/lambda-dom/optics-conversions#readme
@@ -11,6 +11,8 @@ license-file:       LICENSE
 maintainer:         grodrigues.math@gmail.com
 copyright:          2026 G. Rodrigues
 build-type:         Simple
+tested-with:
+    GHC == {9.10.3}
 extra-doc-files:
     LICENSE
     README.md
@@ -23,7 +25,6 @@ source-repository head
 library
     default-language: GHC2021
     default-extensions:
-        RequiredTypeArguments
     ghc-options:
         -Wall
         -Wcompat

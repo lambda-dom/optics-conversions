@@ -10,8 +10,8 @@ module Data.Word.Optics (
     word16ToInt16,
     word32ToInt32,
     word64ToInt64,
-    wordToInt,
     word64ToWord,
+    wordToInt,
 
     -- * Prisms for conversion between integral, unsigned primitive types.
     word8ToWord16,
@@ -88,6 +88,17 @@ note(s):
 word64ToInt64 :: Iso' Word64 Int64
 word64ToInt64 = iso fromIntegral fromIntegral
 
+{- | Isomorphism for conversion between 'Word64' and 'Word'.
+
+note(s):
+
+    * This isomorphism is only valid in platforms where 'Word' has 64 bits.
+    * Uses 'fromIntegral' for both directions.
+-}
+{-# INLINE word64ToWord #-}
+word64ToWord :: Iso' Word64 Word
+word64ToWord = iso fromIntegral fromIntegral
+
 {- | Isomorphism for conversion between 'Word' and 'Int'.
 
 note(s):
@@ -97,19 +108,6 @@ note(s):
 {-# INLINE wordToInt #-}
 wordToInt :: Iso' Word Int
 wordToInt = iso fromIntegral fromIntegral
-
-{- | Isomorphism for conversion between 'Word64' and 'Word'.
-
-note(s):
-
-    * The isomorphism is only valid if 'Word' has 64 bits. This is the common case, but is not
-    guaranteed by the Haskell report.
-
-    * Uses 'fromIntegral' for both directions.
--}
-{-# INLINE word64ToWord #-}
-word64ToWord :: Iso' Word64 Word
-word64ToWord = iso fromIntegral fromIntegral
 
 
 {- | Prism for conversion between 'Word8' and 'Word16'.
@@ -337,4 +335,3 @@ note(s):
 {-# INLINE word64ToInteger #-}
 word64ToInteger :: Prism' Integer Word64
 word64ToInteger = prism' fromIntegral toIntegralSized
-
