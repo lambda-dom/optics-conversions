@@ -1,7 +1,7 @@
 cabal-version:      3.0
 name:               optics-conversions
 version:            0.1.0.0
-synopsis:           Optics for safe conversions between types.
+synopsis:           Optics for safe conversions involving integral, primitive types.
 description:        Please see the README on GitHub at <https://github.com/lambda-dom/optics-conversions#readme>
 category:           Data
 homepage:           https://github.com/lambda-dom/optics-conversions#readme

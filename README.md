@@ -1,3 +1,3 @@
 # optics-conversions.
 
-Optics for safe conversions between types.
+Optics for safe conversions involving integral, primitive types.
