@@ -53,4 +53,3 @@ library
         Data.Int.Optics
         Data.Enum.Optics
         Data.Bits.Optics
-        Data.List.NonEmpty.Optics

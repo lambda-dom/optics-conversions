@@ -7,7 +7,6 @@ Optics for conversions from types with @'Bits'@ constraints.
 module Data.Bits.Optics (
     -- * Utility functions.
     bitCount,
-    byteCount,
 
     -- * Lenses for types with a 'Bits' constraint.
     bitAt,
@@ -42,7 +41,7 @@ import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
 -- >>> import Optics.Core
 
 
-{- | Return the number of bits in the integral type.
+{- | Return the number of bits in the type.
 
 === __Examples:__
 
@@ -55,24 +54,6 @@ import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
 {-# INLINE bitCount #-}
 bitCount :: forall a -> FiniteBits a => Int
 bitCount a = finiteBitSize (zeroBits @a)
-
-{- | Return the number of bytes in the integral type.
-
-note(s):
-
-  * It is implicitely assumed that the number of bits is a positive multiple of @8@.
-
-=== __Examples:__
-
->>> byteCount Word8
-1
-
->>> byteCount Int
-8
--}
-{-# INLINE byteCount #-}
-byteCount :: forall a -> FiniteBits a => Int
-byteCount a = bitCount a `quot` bitCount Word8
 
 
 {- | Generic bit flag lens.
@@ -195,11 +176,7 @@ bitsBe = iso from to
                 withBit :: Int -> Bool -> Word8
                 withBit n b = set (bitAt n) b zeroBits
 
-{- | Isomorphism between 'Word16' and tuples of 'Word8'.
-
-note(s):
-
-    * The order of the bytes is little-endian, that is, least to most significant.
+{- | Isomorphism between 'Word16' and tuples of 'Word8' in little-endian order.
 
 === __Examples:__
 
@@ -216,11 +193,7 @@ word16BytesLe = iso from to
         to :: (Word8, Word8) -> Word16
         to (m, n) = let h = review word8ToWord16 in h m .|. shiftL (h n) 8
 
-{- | Isomorphism between 'Word16' and tuples of 'Word8'.
-
-note(s):
-
-    * The order of the bytes is big-endian, that is, most to least significant.
+{- | Isomorphism between 'Word16' and tuples of 'Word8' in big-endian order.
 
 === __Examples:__
 
@@ -237,11 +210,7 @@ word16BytesBe = iso from to
         to :: (Word8, Word8) -> Word16
         to (m, n) = let h = review word8ToWord16 in h n .|. shiftL (h m) 8
 
-{- | Isomorphism between 'Word32' and 4-tuples of 'Word8'.
-
-note(s):
-
-    * The order of the bytes is little-endian, that is, least to most significant.
+{- | Isomorphism between 'Word32' and 4-tuples of 'Word8' in little-endian order.
 
 === __Examples:__
 
@@ -262,11 +231,7 @@ word32BytesLe = iso from to
             .|. shiftL (h o) 16
             .|. shiftL (h p) 24
 
-{- | Isomorphism between 'Word32' and 4-tuples of 'Word8'.
-
-note(s):
-
-    * The order of the bytes is big-endian, that is, most to least significant.
+{- | Isomorphism between 'Word32' and 4-tuples of 'Word8' in big-endian order.
 
 === __Examples:__
 
@@ -287,11 +252,7 @@ word32BytesBe = iso from to
             .|. shiftL (h n) 16
             .|. shiftL (h m) 24
 
-{- | Isomorphism between 'Word64' and 8-tuples of 'Word8'.
-
-note(s):
-
-    * The order of the bytes is little-endian, that is, least to most significant.
+{- | Isomorphism between 'Word64' and 8-tuples of 'Word8' in little-endian order.
 
 === __Examples:__
 
@@ -325,11 +286,7 @@ word64BytesLe = iso from to
             .|. shiftL (h s) 48
             .|. shiftL (h t) 56
 
-{- | Isomorphism between 'Word64' and 8-tuples of 'Word8'.
-
-note(s):
-
-    * The order of the bytes is big-endian, that is, most to least significant.
+{- | Isomorphism between 'Word64' and 8-tuples of 'Word8' in big-endian order.
 
 === __Examples:__
 
