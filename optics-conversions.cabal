@@ -25,7 +25,6 @@ source-repository head
 library
     default-language: GHC2021
     default-extensions:
-        RequiredTypeArguments
     ghc-options:
         -Wall
         -Wcompat

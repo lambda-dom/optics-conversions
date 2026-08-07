@@ -5,9 +5,6 @@ Optics for conversions from types with @'Bits'@ constraints.
 -}
 
 module Data.Bits.Optics (
-    -- * Utility functions.
-    bitCount,
-
     -- * Lenses for types with a 'Bits' constraint.
     bitAt,
     byteAt,
@@ -26,7 +23,7 @@ module Data.Bits.Optics (
 
 -- Imports.
 -- Base.
-import Data.Bits (Bits (..), FiniteBits (..))
+import Data.Bits (Bits (..))
 import Data.Word (Word8, Word16, Word32, Word64)
 
 -- Libraries.
@@ -37,23 +34,7 @@ import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
 
 
 -- $setup
--- >>> import Data.Word
 -- >>> import Optics.Core
-
-
-{- | Return the number of bits in the type.
-
-=== __Examples:__
-
->>> bitCount Word8
-8
-
->>> bitCount Int
-64
--}
-{-# INLINE bitCount #-}
-bitCount :: forall a -> FiniteBits a => Int
-bitCount a = finiteBitSize (zeroBits @a)
 
 
 {- | Generic bit flag lens.
@@ -94,11 +75,7 @@ byteAt i = lens project update
         update n w = let m = shiftL (fromIntegral w) (8 * i) in (n .&. complement m) .|. m
 
 
-{- | Isomorphism between t'Word8' and 8-tuples of 'Bool'.
-
-note(s):
-
-    * The order of the bits is little-endian, that is, least to most significant.
+{- | Isomorphism between t'Word8' and 8-tuples of 'Bool' in little-endian order.
 
 === __Examples:__
 
@@ -135,11 +112,7 @@ bitsLe = iso from to
                 withBit :: Int -> Bool -> Word8
                 withBit n b = set (bitAt n) b zeroBits 
 
-{- | Isomorphism between t'Word8' and 8-tuples of 'Bool'.
-
-note(s):
-
-    * The order of the bits is big-endian, that is, most to least significant.
+{- | Isomorphism between t'Word8' and 8-tuples of 'Bool' in big-endian order.
 
 === __Examples:__
 
