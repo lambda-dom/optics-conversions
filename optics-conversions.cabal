@@ -22,7 +22,8 @@ source-repository head
     type: git
     location: https://github.com/lambda-dom/optics-conversions
 
-library
+
+common common-fields
     default-language: GHC2021
     default-extensions:
     ghc-options:
@@ -39,16 +40,31 @@ library
         -Wunused-packages
         -- Prepare for dependent types.
         -Wterm-variable-capture
-    hs-source-dirs:
-        src
     build-depends:
         -- GHC >= 9.10 && < 9.12
         base >=4.20 && <4.21,
         -- Libraries.
-        optics-core >= 0.4.2 && <0.4.3,
-    other-modules:
+        optics-core >=0.4.2 && <0.4.3,
+
+library
+    import:
+        common-fields
+    hs-source-dirs:
+        src
     exposed-modules:
         Data.Word.Optics
         Data.Int.Optics
         Data.Enum.Optics
         Data.Bits.Optics
+
+test-suite optics-conversions-tests
+    import:
+        common-fields
+    hs-source-dirs:
+        tests
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    build-depends:
+        -- Libraries.
+        hedgehog >=1.5 && <1.6,
+    other-modules:
