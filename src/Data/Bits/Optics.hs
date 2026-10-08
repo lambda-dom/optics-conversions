@@ -81,6 +81,9 @@ byteAt i = lens project update
 
 >>> view bitsLe 0x04
 (False,False,True,False,False,False,False,False)
+
+>>> review bitsLe (False,False,True,False,False,False,False,False)
+4
 -}
 {-# INLINE bitsLe #-}
 bitsLe :: Iso' Word8 (Bool, Bool, Bool, Bool, Bool, Bool, Bool, Bool)
@@ -118,6 +121,9 @@ bitsLe = iso from to
 
 >>> view bitsBe 0x04
 (False,False,False,False,False,True,False,False)
+
+>>> review bitsBe (False,False,False,False,False,True,False,False)
+4
 -}
 {-# INLINE bitsBe #-}
 bitsBe :: Iso' Word8 (Bool, Bool, Bool, Bool, Bool, Bool, Bool, Bool)
@@ -155,6 +161,9 @@ bitsBe = iso from to
 
 >>> view word16BytesLe 0xff00
 (0,255)
+
+>>> review word16BytesLe (0,255)
+65280
 -}
 {-# INLINE word16BytesLe #-}
 word16BytesLe :: Iso' Word16 (Word8, Word8)
@@ -172,6 +181,9 @@ word16BytesLe = iso from to
 
 >>> view word16BytesBe 0xff00
 (255,0)
+
+>>> review word16BytesBe (255, 0)
+65280
 -}
 {-# INLINE word16BytesBe #-}
 word16BytesBe :: Iso' Word16 (Word8, Word8)
@@ -189,6 +201,9 @@ word16BytesBe = iso from to
 
 >>> view word32BytesLe 0xff00
 (0,255,0,0)
+
+>>> review word32BytesLe (0,255,0,0)
+65280
 -}
 {-# INLINE word32BytesLe #-}
 word32BytesLe :: Iso' Word32 (Word8, Word8, Word8, Word8)
@@ -210,6 +225,9 @@ word32BytesLe = iso from to
 
 >>> view word32BytesBe 0xff00
 (0,0,255,0)
+
+>>> review word32BytesBe (0,0,255,0)
+65280
 -}
 {-# INLINE word32BytesBe #-}
 word32BytesBe :: Iso' Word32 (Word8, Word8, Word8, Word8)
@@ -231,6 +249,9 @@ word32BytesBe = iso from to
 
 >>> view word64BytesLe 0xff00
 (0,255,0,0,0,0,0,0)
+
+>>> review word64BytesLe (0,255,0,0,0,0,0,0)
+65280
 -}
 {-# INLINE word64BytesLe #-}
 word64BytesLe :: Iso' Word64 (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
@@ -265,6 +286,9 @@ word64BytesLe = iso from to
 
 >>> view word64BytesBe 0xff00
 (0,0,0,0,0,0,255,0)
+
+>>> review word64BytesBe (0,0,0,0,0,0,255,0)
+65280
 -}
 {-# INLINE word64BytesBe #-}
 word64BytesBe :: Iso' Word64 (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
