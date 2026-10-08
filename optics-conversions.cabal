@@ -22,7 +22,6 @@ source-repository head
     type: git
     location: https://github.com/lambda-dom/optics-conversions
 
-
 common common-fields
     default-language: GHC2021
     default-extensions:
@@ -65,6 +64,7 @@ test-suite optics-conversions-tests
     type: exitcode-stdio-1.0
     main-is: Main.hs
     build-depends:
+        optics-conversions,
         -- Libraries.
         hedgehog >=1.5 && <1.6,
     other-modules:
