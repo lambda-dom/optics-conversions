@@ -8,8 +8,9 @@ module Lib.Gen (
 
     -- * Tuple generators.
     tupleWord8,
-    tuple8Bool,
     tuple4Word8,
+    tuple8Word8,
+    tuple8Bool,
 ) where
 
 -- Imports.
@@ -43,16 +44,26 @@ tupleWord8 = (,) <$> word8 <*> word8
 tuple4Word8 :: Gen (Word8, Word8, Word8, Word8)
 tuple4Word8 = (,,,) <$> word8 <*> word8 <*> word8 <*> word8
 
+{- | Generator for 8-tuples of 'Word8'. -}
+tuple8Word8 :: Gen (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
+tuple8Word8 = (,,,,,,,)
+    <$> word8
+    <*> word8
+    <*> word8
+    <*> word8
+    <*> word8
+    <*> word8
+    <*> word8
+    <*> word8
 
 {- | Generator for 8-tuples of 'Bool'. -}
 tuple8Bool :: Gen (Bool, Bool, Bool, Bool, Bool, Bool, Bool, Bool)
-tuple8Bool = do
-    x1 <- bool False
-    x2 <- bool False
-    x3 <- bool False
-    x4 <- bool False
-    x5 <- bool False
-    x6 <- bool False
-    x7 <- bool False
-    x8 <- bool False
-    pure (x1, x2, x3, x4, x5, x6, x7, x8)
+tuple8Bool = (,,,,,,,)
+    <$> bool False
+    <*> bool False
+    <*> bool False
+    <*> bool False
+    <*> bool False
+    <*> bool False
+    <*> bool False
+    <*> bool False

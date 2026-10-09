@@ -297,7 +297,7 @@ word64BytesBe = iso from to
         from :: Word64 -> (Word8, Word8, Word8, Word8, Word8, Word8, Word8, Word8)
         from n = (
                     view (byteAt 7) n,
-                    view (byteAt 5) n,
+                    view (byteAt 6) n,
                     view (byteAt 5) n,
                     view (byteAt 4) n,
                     view (byteAt 3) n,

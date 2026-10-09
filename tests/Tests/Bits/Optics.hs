@@ -7,14 +7,23 @@ module Tests.Bits.Optics (
 -- Testing.
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Falsify (testProperty)
+import Test.Falsify.Generator (prim)
 
 -- Package.
 -- Testing.
 import Lib.Optics (test_isomorphism_laws)
-import Lib.Gen (word8, tuple8Bool, word16, tupleWord8, word32, tuple4Word8)
+import Lib.Gen (word8, tuple8Bool, word16, tupleWord8, word32, tuple4Word8, tuple8Word8)
 
 -- Module to test.
-import Data.Bits.Optics (bitsLe, bitsBe, word16BytesLe, word16BytesBe, word32BytesLe, word32BytesBe)
+import Data.Bits.Optics (
+    bitsLe,
+    bitsBe,
+    word16BytesLe,
+    word16BytesBe,
+    word32BytesLe,
+    word32BytesBe,
+    word64BytesLe,
+    word64BytesBe)
 
 
 {- | Test the @'bitsLe'@ isomorphism. -}
@@ -59,6 +68,20 @@ test_word32BytesBe =
             "test word32BytesBe isomorphism"
             (test_isomorphism_laws ("word32BytesBe", word32BytesBe) word32 tuple4Word8)
 
+{- | Test the @'word64BytesLe'@ isomorphism. -}
+test_word64BytesLe :: TestTree
+test_word64BytesLe =
+        testProperty
+            "test word64BytesLe isomorphism"
+            (test_isomorphism_laws ("word64BytesLe", word64BytesLe) prim tuple8Word8)
+
+{- | Test the @'word64BytesBe'@ isomorphism. -}
+test_word64BytesBe :: TestTree
+test_word64BytesBe =
+        testProperty
+            "test word64BytesBe isomorphism"
+            (test_isomorphism_laws ("word64BytesBe", word64BytesBe) prim tuple8Word8)
+
 
 {- | Test group for optics in the Bits module. -}
 tests :: TestTree
@@ -71,5 +94,7 @@ tests =
             test_word16BytesLe,
             test_word16BytesBe,
             test_word32BytesLe,
-            test_word32BytesBe
+            test_word32BytesBe,
+            test_word64BytesLe,
+            test_word64BytesBe
         ]
