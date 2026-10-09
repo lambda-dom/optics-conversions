@@ -64,8 +64,9 @@ test-suite optics-conversions-tests
     build-depends:
         optics-conversions,
         -- Libraries.
-        tasty   >=1.5 && <1.6,
-        falsify >=0.4 && <0.5,
+        tasty         >=1.5 && <1.6,
+        falsify       >=0.4 && <0.5,
+        tasty-falsify >=0.1 && <0.2,
     other-modules:
         Lib.Optics
         Lib.Gen
