@@ -62,9 +62,11 @@ test-suite optics-conversions-tests
     type: exitcode-stdio-1.0
     main-is: Main.hs
     build-depends:
-        -- optics-conversions,
+        optics-conversions,
         -- Libraries.
         tasty   >=1.5 && <1.6,
         falsify >=0.4 && <0.5,
     other-modules:
         Lib.Optics
+        Lib.Gen
+        Tests.Bits.Optics
