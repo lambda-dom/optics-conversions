@@ -71,3 +71,4 @@ test-suite optics-conversions-tests
         Lib.Optics
         Lib.Gen
         Tests.Bits.Optics
+        Tests.Enum.Optics

@@ -11,6 +11,9 @@ module Lib.Gen (
     tuple4Word8,
     tuple8Word8,
     tuple8Bool,
+
+    -- * Enumeration generators.
+    enumFull,
 ) where
 
 -- Imports.
@@ -20,7 +23,8 @@ import Data.Word (Word8, Word16, Word32, Word64)
 -- Testing.
 import Data.Falsify.WordN (Precision (..), forgetPrecision)
 import Test.Falsify (Gen)
-import Test.Falsify.Generator (wordN, bool)
+import Test.Falsify.Generator (wordN, bool, inRange)
+import Test.Falsify.Range (enum)
 
 
 {- | 'Word8' generator. Biased towards zero. -}
@@ -67,3 +71,7 @@ tuple8Bool = (,,,,,,,)
     <*> bool False
     <*> bool False
     <*> bool False
+
+{- | Generator for the full range of a bounded enumeration. -}
+enumFull :: (Enum a, Bounded a) => Gen a
+enumFull = inRange $ enum (minBound, maxBound)

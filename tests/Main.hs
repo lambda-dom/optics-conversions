@@ -4,6 +4,7 @@ import Test.Tasty (defaultMain, testGroup)
 
 -- Package.
 import Tests.Bits.Optics qualified as Bits (tests)
+import Tests.Enum.Optics qualified as Enum (tests)
 
 
 -- Main test driver.
@@ -12,4 +13,4 @@ main =
     defaultMain $
         testGroup
         "Package tests."
-        [Bits.tests]
+        [Bits.tests, Enum.tests]
