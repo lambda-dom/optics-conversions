@@ -40,17 +40,14 @@ common common-fields
         -- Prepare for dependent types.
         -Wterm-variable-capture
     build-depends:
-        -- GHC >= 9.10 && < 9.12
-        base >=4.20 && <4.21,
+        base        >=4.20  && <4.21,
+        optics-core >=0.4.2 && <0.4.3,
 
 library
     import:
         common-fields
     hs-source-dirs:
         src
-    build-depends:
-        -- Libraries.
-        optics-core >=0.4.2 && <0.4.3,
     exposed-modules:
         Data.Word.Optics
         Data.Int.Optics
@@ -67,5 +64,7 @@ test-suite optics-conversions-tests
     build-depends:
         -- optics-conversions,
         -- Libraries.
-        tasty >=1.5.4 && <1.5.5,
+        tasty   >=1.5 && <1.6,
+        falsify >=0.4 && <0.5,
     other-modules:
+        Lib.Optics
