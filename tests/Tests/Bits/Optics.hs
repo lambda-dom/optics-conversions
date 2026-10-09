@@ -1,12 +1,11 @@
 module Tests.Bits.Optics (
     -- * Tests.
-    test_bitsLe,
-    test_bitsBe,
+    tests,
 ) where
 
 -- Imports.
 -- Testing.
-import Test.Tasty (TestTree)
+import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Falsify (testProperty)
 
 -- Package.
@@ -31,3 +30,11 @@ test_bitsBe =
     testProperty
         "Test bitsBe isomorphism"
         (test_isomorphism_laws ("bitsBe", bitsBe) word8 tuple8Bool)
+
+
+{- | Test group for optics in the Bits module. -}
+tests :: TestTree
+tests =
+    testGroup
+        "Tests for the Data.Bits.Optics module."
+        [test_bitsLe, test_bitsBe]
