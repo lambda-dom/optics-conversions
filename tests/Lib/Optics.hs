@@ -4,7 +4,6 @@ module Lib.Optics (
     -- * Properties.
     -- ** Extensional equality of functions.
     test_extensional_equality,
-    test_extensional_equality_binary,
 
     -- ** Optics laws.
     test_isomorphism_laws,
@@ -20,7 +19,7 @@ import Optics.Core (Iso', view, review, Prism', preview)
 
 -- Testing.
 import Test.Falsify (Property, Gen, Predicate, (.$), assert, gen)
-import Test.Falsify.Predicate (prettyExpr, unary, binary)
+import Test.Falsify.Predicate (satisfies)
 
 
 {- | Predicate for functional, extensional equality of functions. -}
@@ -30,27 +29,9 @@ isExtensionallyEqual
     -> (String, a -> b)
     -> Predicate '[a]
 isExtensionallyEqual (xs, f) (ys, g) =
-    unary
-        (\ x -> f x == g x)
-        (\ e -> let zs = " applied to " ++ prettyExpr e in xs ++ zs ++ " not equal to " ++ ys ++ zs)
+    satisfies (fromString $ "Predicate " ++ xs ++ " == " ++ ys, \ x -> f x == g x)
 
-{- | Predicate for functional, extensional equality of binary functions. -}
-isExtensionallyEqualBinary
-    :: Eq c
-    => (String, a -> b -> c)
-    -> (String, a -> b -> c)
-    -> Predicate '[a, b]
-isExtensionallyEqualBinary (xs, f) (ys, g) =
-    binary
-        (\ x y -> f x y == g x y)
-        (\ e1 e2 ->
-            let
-                zs = " applied to " ++ prettyExpr e1 ++ " and " ++ prettyExpr e2
-            in
-                xs ++ zs ++ " not equal to " ++ ys ++ zs)
-        
-
-{- | Functional equality predicate. -}
+{- | Test extensional equality of functions. -}
 test_extensional_equality
     :: (Show a, Eq b)
     => (String, a -> b)
@@ -60,19 +41,6 @@ test_extensional_equality
 test_extensional_equality p q genArg = do
         x <- gen genArg
         assert $ isExtensionallyEqual p q .$ (fromString "x", x)
-
-{- | Functional equality predicate. -}
-test_extensional_equality_binary
-    :: (Show a, Show b, Eq c)
-    => (String, a -> b -> c)
-    -> (String, a -> b -> c)
-    -> Gen a
-    -> Gen b
-    -> Property ()
-test_extensional_equality_binary p q gen1 gen2 = do
-        x <- gen gen1
-        y <- gen gen2
-        assert $ isExtensionallyEqualBinary p q .$ (fromString "x", x) .$ (fromString "y", y)
 
 {- | Test the forward law of an @Iso\'@. -}
 test_isomorphism_laws_forward
@@ -85,7 +53,7 @@ test_isomorphism_laws_forward (xs, i) generator = do
         assert $ isExtensionallyEqual forward ("identity", id) .$ (fromString "x", x)
     where
         forward :: (String, a -> a)
-        forward = ("Forward direction of " ++ xs, review i . view i)
+        forward = ("review " ++ xs ++ " . view " ++ xs, review i . view i)
 
 {- | Test the inverse law of an @Iso\'@. -}
 test_isomorphism_laws_inverse
@@ -98,7 +66,7 @@ test_isomorphism_laws_inverse (xs, i) generator = do
         assert $ isExtensionallyEqual inverse ("identity", id) .$ (fromString "y", y)
     where
         inverse :: (String, b -> b)
-        inverse = ("Inverse direction of " ++ xs, view i . review i)
+        inverse = ("view " ++ xs ++ " . review " ++ xs, view i . review i)
 
 {- | Test isomorphism laws. -}
 test_isomorphism_laws
@@ -123,7 +91,7 @@ test_prism_preview_review (xs, p) generator = do
         assert $ isExtensionallyEqual forward ("Just", Just) .$ (fromString "x", x)
     where
         forward :: (String, a -> Maybe a)
-        forward = ("Forward direction of " ++ xs, preview p . review p)
+        forward = ("preview " ++ xs ++ " . review " ++ xs, preview p . review p)
 
 test_prism_review_preview
     :: forall s a . (Eq s, Show s)
@@ -135,10 +103,10 @@ test_prism_review_preview (xs, p) generator = do
         assert $ isExtensionallyEqual inverse endo .$ (fromString "s", s)
     where
         inverse :: (String, s -> Maybe s)
-        inverse = ("Forward direction of " ++ xs, fmap (review p) . preview p)
+        inverse = ("fmap (review " ++ xs ++ ") . preview " ++ xs, fmap (review p) . preview p)
 
         endo :: (String, s -> Maybe s)
-        endo = ("Matching element of " ++ xs, \ s -> maybe Nothing (const . Just $ s) (preview p s))
+        endo = ("matchingElem " ++ xs, \ s -> maybe Nothing (const . Just $ s) (preview p s))
 
 {- | Test isomorphism laws. -}
 test_prism_laws
