@@ -50,7 +50,7 @@ word16 = integral
 word32 :: Gen Word32
 word32 = integral
 
-{- | Uniform generator for 'Int8'. -}
+{- | Specialization of 'integral' for 'Int8' generator. -}
 int8 :: Gen Int8
 int8 = integral
 
