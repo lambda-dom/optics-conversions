@@ -19,7 +19,7 @@ import Optics.Core (Iso', view, review, Prism', preview)
 
 -- Testing.
 import Test.Falsify (Property, Gen, Predicate, (.$), assert, gen)
-import Test.Falsify.Predicate (prettyExpr, unary)
+import Test.Falsify.Predicate (satisfies)
 
 
 {- | Predicate for functional, extensional equality of functions. -}
@@ -29,10 +29,7 @@ isExtensionallyEqual
     -> (String, a -> b)
     -> Predicate '[a]
 isExtensionallyEqual (xs, f) (ys, g) =
-    unary
-        (\ x -> f x == g x)
-        (\ e -> let zs = " applied to " ++ prettyExpr e in xs ++ zs ++ " not equal to " ++ ys ++ zs)
-
+    satisfies (fromString $ "Predicate " ++ xs ++ " == " ++ ys, \ x -> f x == g x)
 
 {- | Test extensional equality of functions. -}
 test_extensional_equality
