@@ -53,7 +53,7 @@ test_isomorphism_laws_forward (xs, i) generator = do
         assert $ isExtensionallyEqual forward ("identity", id) .$ (fromString "x", x)
     where
         forward :: (String, a -> a)
-        forward = ("Forward direction of " ++ xs, review i . view i)
+        forward = ("review " ++ xs ++ " . view " ++ xs, review i . view i)
 
 {- | Test the inverse law of an @Iso\'@. -}
 test_isomorphism_laws_inverse
@@ -66,7 +66,7 @@ test_isomorphism_laws_inverse (xs, i) generator = do
         assert $ isExtensionallyEqual inverse ("identity", id) .$ (fromString "y", y)
     where
         inverse :: (String, b -> b)
-        inverse = ("Inverse direction of " ++ xs, view i . review i)
+        inverse = ("view " ++ xs ++ " . review " ++ xs, view i . review i)
 
 {- | Test isomorphism laws. -}
 test_isomorphism_laws
@@ -91,7 +91,7 @@ test_prism_preview_review (xs, p) generator = do
         assert $ isExtensionallyEqual forward ("Just", Just) .$ (fromString "x", x)
     where
         forward :: (String, a -> Maybe a)
-        forward = ("Forward direction of " ++ xs, preview p . review p)
+        forward = ("preview " ++ xs ++ " . review " ++ xs, preview p . review p)
 
 test_prism_review_preview
     :: forall s a . (Eq s, Show s)
@@ -103,10 +103,10 @@ test_prism_review_preview (xs, p) generator = do
         assert $ isExtensionallyEqual inverse endo .$ (fromString "s", s)
     where
         inverse :: (String, s -> Maybe s)
-        inverse = ("Forward direction of " ++ xs, fmap (review p) . preview p)
+        inverse = ("fmap (review " ++ xs ++ ") . preview " ++ xs, fmap (review p) . preview p)
 
         endo :: (String, s -> Maybe s)
-        endo = ("Matching element of " ++ xs, \ s -> maybe Nothing (const . Just $ s) (preview p s))
+        endo = ("matchingElem " ++ xs, \ s -> maybe Nothing (const . Just $ s) (preview p s))
 
 {- | Test isomorphism laws. -}
 test_prism_laws
