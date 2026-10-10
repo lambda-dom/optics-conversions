@@ -50,7 +50,7 @@ isExtensionallyEqualBinary (xs, f) (ys, g) =
                 xs ++ zs ++ " not equal to " ++ ys ++ zs)
         
 
-{- | Functional equality predicate. -}
+{- | Test extensional equality of functions. -}
 test_extensional_equality
     :: (Show a, Eq b)
     => (String, a -> b)
@@ -61,7 +61,7 @@ test_extensional_equality p q genArg = do
         x <- gen genArg
         assert $ isExtensionallyEqual p q .$ (fromString "x", x)
 
-{- | Functional equality predicate. -}
+{- | Test extensional equality of binary functions. -}
 test_extensional_equality_binary
     :: (Show a, Show b, Eq c)
     => (String, a -> b -> c)
