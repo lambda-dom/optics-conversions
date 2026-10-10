@@ -7,12 +7,12 @@ module Tests.Bits.Optics (
 -- Testing.
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Falsify (testProperty)
-import Test.Falsify.Generator (prim)
+import Test.Falsify.Generator (prim, bool)
 
 -- Package.
 -- Testing.
 import Lib.Optics (test_isomorphism_laws)
-import Lib.Gen (word8, tuple8Bool, word16, tupleWord8, word32, tuple4Word8, tuple8Word8)
+import Lib.Gen (word8, word16, word32, octuple, pair, quadruple)
 
 -- Module to test.
 import Data.Bits.Optics (
@@ -31,56 +31,62 @@ test_bitsLe :: TestTree
 test_bitsLe =
     testProperty
         "Test bitsLe isomorphism"
-        (test_isomorphism_laws ("bitsLe", bitsLe) word8 tuple8Bool)
+        (test_isomorphism_laws ("bitsLe", bitsLe) word8 (octuple $ bool False))
 
 {- | Test the @'bitsBe'@ isomorphism. -}
 test_bitsBe :: TestTree
 test_bitsBe =
     testProperty
         "Test bitsBe isomorphism"
-        (test_isomorphism_laws ("bitsBe", bitsBe) word8 tuple8Bool)
+        (test_isomorphism_laws ("bitsBe", bitsBe) word8 (octuple $ bool False))
 
 {- | Test the @'word16BytesLe'@ isomorphism. -}
 test_word16BytesLe :: TestTree
 test_word16BytesLe =
         testProperty
             "test word16BytesLe isomorphism"
-            (test_isomorphism_laws ("word16BytesLe", word16BytesLe) word16 tupleWord8)
+            (test_isomorphism_laws ("word16BytesLe", word16BytesLe) word16 (pair word8 word8))
 
 {- | Test the @'word16BytesBe'@ isomorphism. -}
 test_word16BytesBe :: TestTree
 test_word16BytesBe =
         testProperty
             "test word16BytesBe isomorphism"
-            (test_isomorphism_laws ("word16BytesBe", word16BytesBe) word16 tupleWord8)
+            (test_isomorphism_laws ("word16BytesBe", word16BytesBe) word16 (pair word8 word8))
 
 {- | Test the @'word32BytesLe'@ isomorphism. -}
 test_word32BytesLe :: TestTree
 test_word32BytesLe =
         testProperty
             "test word32BytesLe isomorphism"
-            (test_isomorphism_laws ("word32BytesLe", word32BytesLe) word32 tuple4Word8)
+            (test_isomorphism_laws
+                ("word32BytesLe", word32BytesLe)
+                word32
+                (quadruple word8 word8 word8 word8))
 
 {- | Test the @'word32BytesBe'@ isomorphism. -}
 test_word32BytesBe :: TestTree
 test_word32BytesBe =
         testProperty
             "test word32BytesBe isomorphism"
-            (test_isomorphism_laws ("word32BytesBe", word32BytesBe) word32 tuple4Word8)
+            (test_isomorphism_laws
+                ("word32BytesBe", word32BytesBe)
+                word32
+                (quadruple word8 word8 word8 word8))
 
 {- | Test the @'word64BytesLe'@ isomorphism. -}
 test_word64BytesLe :: TestTree
 test_word64BytesLe =
         testProperty
             "test word64BytesLe isomorphism"
-            (test_isomorphism_laws ("word64BytesLe", word64BytesLe) prim tuple8Word8)
+            (test_isomorphism_laws ("word64BytesLe", word64BytesLe) prim (octuple word8))
 
 {- | Test the @'word64BytesBe'@ isomorphism. -}
 test_word64BytesBe :: TestTree
 test_word64BytesBe =
         testProperty
             "test word64BytesBe isomorphism"
-            (test_isomorphism_laws ("word64BytesBe", word64BytesBe) prim tuple8Word8)
+            (test_isomorphism_laws ("word64BytesBe", word64BytesBe) prim (octuple word8))
 
 
 {- | Test group for optics in the Bits module. -}
