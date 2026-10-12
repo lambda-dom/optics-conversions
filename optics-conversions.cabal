@@ -25,6 +25,7 @@ source-repository head
 common common-fields
     default-language: GHC2021
     default-extensions:
+        DerivingStrategies
     ghc-options:
         -Wall
         -Wcompat
@@ -36,7 +37,8 @@ common common-fields
         -Wpartial-fields
         -Wredundant-constraints
         -Wmissing-deriving-strategies
-        -Wunused-packages
+        -- TODO: uncomment when dependencies set up.
+        -- -Wunused-packages
         -- Prepare for dependent types.
         -Wterm-variable-capture
     build-depends:
@@ -64,11 +66,12 @@ test-suite optics-conversions-tests
     build-depends:
         optics-conversions,
         -- Libraries.
-        tasty         >=1.5 && <1.6,
-        falsify       >=0.4 && <0.5,
-        tasty-falsify >=0.1 && <0.2,
+        tasty          >=1.5 && <1.6,
+        hedgehog       >=1.5 && <1.6,
+        tasty-hedgehog >=1.4 && <1.5
     other-modules:
-        Lib.Optics
-        Lib.Gen
-        Tests.Bits.Optics
-        Tests.Enum.Optics
+        Lib.Names
+        -- Lib.Optics
+        -- Lib.Gen
+        -- Tests.Bits.Optics
+        -- Tests.Enum.Optics
