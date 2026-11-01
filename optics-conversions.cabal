@@ -53,6 +53,7 @@ library
         Data.Int.Optics
         Data.Enum.Optics
         Data.Bits.Optics
+        Data.Char.Optics
 
 test-suite optics-conversions-tests
     import:
