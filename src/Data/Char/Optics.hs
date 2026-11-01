@@ -6,6 +6,7 @@ Optics for conversions involving t'Char'.
 
 module Data.Char.Optics (
     -- * Prisms.
+    category,
     ascii,
 ) where
 
@@ -22,7 +23,21 @@ import Optics.Core (Prism', prism')
 -- >>> import Optics.Core
 
 
+{- | Prism for converting between a subcategory of latin-1 characters and 'Word8'. -}
+category :: (Word8 -> Bool) -> Prism' Word8 Char
+category p = prism' construct match
+    where
+        construct :: Char -> Word8
+        construct = fromIntegral @Int @Word8 . ord
+
+        match :: Word8 -> Maybe Char
+        match n = if p n then Just . chr $ fromIntegral @Word8 @Int n else Nothing
+
 {- | Prism for converting between ascii characters and 'Word8'.
+
+Defined as:
+
+@ascii = category (<= 127)@
 
 === __Examples:__
 
@@ -37,10 +52,4 @@ Nothing
 -}
 {-# INLINE ascii #-}
 ascii :: Prism' Word8 Char
-ascii = prism' construct match
-    where
-        construct :: Char -> Word8
-        construct = fromIntegral @Int @Word8 . ord
-
-        match :: Word8 -> Maybe Char
-        match n = if n <= 127 then Just . chr $ fromIntegral @Word8 @Int n else Nothing
+ascii = category (<= 127)
