@@ -24,6 +24,7 @@ import Optics.Core (Prism', prism')
 
 
 {- | Prism for converting between a subcategory of latin-1 characters and 'Word8'. -}
+{-# INLINE category #-}
 category :: (Word8 -> Bool) -> Prism' Word8 Char
 category p = prism' construct match
     where
