@@ -12,8 +12,7 @@ module Data.Char.Optics (
 
 -- Imports.
 -- Base.
-import Data.Char (chr, ord)
-import Data.Word (Word8)
+import Data.Char (chr, ord, isAscii)
 
 -- Libraries.
 import Optics.Core (Prism', prism')
@@ -23,22 +22,22 @@ import Optics.Core (Prism', prism')
 -- >>> import Optics.Core
 
 
-{- | Prism for converting between a subcategory of latin-1 characters and 'Word8'. -}
+{- | Prism for converting between a subcategory of utf-8 characters and 'Int'. -}
 {-# INLINE category #-}
-category :: (Word8 -> Bool) -> Prism' Word8 Char
+category :: (Char -> Bool) -> Prism' Int Char
 category p = prism' construct match
     where
-        construct :: Char -> Word8
-        construct = fromIntegral @Int @Word8 . ord
+        construct :: Char -> Int
+        construct = ord
 
-        match :: Word8 -> Maybe Char
-        match n = if p n then Just . chr $ fromIntegral @Word8 @Int n else Nothing
+        match :: Int -> Maybe Char
+        match n = let c = chr n in if p c then Just c else Nothing
 
-{- | Prism for converting between ascii characters and 'Word8'.
+{- | Prism for converting between ascii characters and 'Int'.
 
 Defined as:
 
-@ascii = category (<= 127)@
+@ascii = category isAscii@
 
 === __Examples:__
 
@@ -52,5 +51,5 @@ Just '\n'
 Nothing
 -}
 {-# INLINE ascii #-}
-ascii :: Prism' Word8 Char
-ascii = category (<= 127)
+ascii :: Prism' Int Char
+ascii = category isAscii
