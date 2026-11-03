@@ -22,7 +22,7 @@ import Optics.Core (Prism', prism')
 -- >>> import Optics.Core
 
 
-{- | Prism for converting between a subcategory of utf-8 characters and 'Int'. -}
+{- | Prism for converting between a category of utf-8 characters and 'Int'. -}
 {-# INLINE category #-}
 category :: (Char -> Bool) -> Prism' Int Char
 category p = prism' construct match
