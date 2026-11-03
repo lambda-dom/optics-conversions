@@ -5,7 +5,7 @@ Optics for conversions from 'Word' and its fixed size variants to other integral
 -}
 
 module Data.Word.Optics (
-    -- * Isomorphisms for lossless conversions between integral, primitive types.
+    -- * Isomorphisms for bidirectional, lossless conversions between integral, primitive types.
     word8ToInt8,
     word16ToInt16,
     word32ToInt32,
