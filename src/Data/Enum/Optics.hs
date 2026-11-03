@@ -14,7 +14,7 @@ module Data.Enum.Optics (
 import Optics.Core (Prism', prism')
 
 
-{- | The prism for conversion of enumerations to 'Int'. -}
+{- | The prism for safe conversion between enumerations and t'Int'. -}
 {-# INLINEABLE enum #-}
 enum :: forall a . (Enum a, Bounded a) => Prism' Int a
 enum = prism' construct match
