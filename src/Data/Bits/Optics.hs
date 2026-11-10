@@ -170,10 +170,10 @@ byteAt :: forall a . (Integral a, Bits a) => Int -> Lens' a Word8
 byteAt i = lens project update
     where
         project :: a -> Word8
-        project n = fromIntegral $ shiftR (shiftL 0xff (8 * i) .&. n) (8 * i)
+        project n = fromIntegral @a @Word8 $ shiftR (shiftL 0xff (8 * i) .&. n) (8 * i)
 
         update :: a -> Word8 -> a
-        update n w = let m = shiftL (fromIntegral w) (8 * i) in (n .&. complement m) .|. m
+        update n w = let m = shiftL (fromIntegral @Word8 @a w) (8 * i) in (n .&. complement m) .|. m
 
 
 {- | Bit traversal for integral types with a 'FiniteBits' constraint. -}
