@@ -49,9 +49,6 @@ library
         common-fields
     hs-source-dirs:
         src
-    build-depends:
-        -- non-Hackage libraries.
-        mono        >=0.0.1 && <0.1,
     exposed-modules:
         Data.Word.Optics
         Data.Int.Optics
