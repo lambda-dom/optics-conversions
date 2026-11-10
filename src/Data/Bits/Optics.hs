@@ -52,7 +52,13 @@ import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
 -- >>> import Optics.Core
 
 
-{- | Return the number of bits in @'FiniteBits' a => a@. -}
+{- | Return the number of bits in @'FiniteBits' a => a@.
+
+=== __Examples:__
+
+>>> bitCount Word32
+32
+-}
 {-# INLINE bitCount #-}
 bitCount :: forall a -> FiniteBits a => Int
 bitCount a = finiteBitSize @a zeroBits
@@ -61,12 +67,17 @@ bitCount a = finiteBitSize @a zeroBits
 
 note(s):
 
-    * Defined as @byteCount a = bitCount a `rem` 8@. Implicitly, the number of bits in @a@ must be
+    * Defined as @byteCount a = bitCount a `quot` 8@. Implicitly, the number of bits in @a@ must be
     a multiple of @8@.
+
+=== __Examples:__
+
+>>> byteCount Word32
+4
 -}
 {-# INLINE byteCount #-}
 byteCount :: forall a -> FiniteBits a => Int
-byteCount a = bitCount a `rem` 8
+byteCount a = bitCount a `quot` 8
 
 
 {- | Return the list of bits in little-endian order.
@@ -74,11 +85,11 @@ byteCount a = bitCount a `rem` 8
 === __Examples:__
 
 >>> toBits (0x0f :: Word8)
-[True,True,True,True,False,False,False,False,False]
+[True,True,True,True,False,False,False,False]
 -}
 {-# INLINE toBits #-}
 toBits :: forall a . FiniteBits a => a -> [Bool]
-toBits n = fmap (\ i -> view (bitAt i) n) [0 .. bitCount a]
+toBits n = fmap (\ i -> view (bitAt i) n) [0 .. pred $ bitCount a]
 
 {- | Pack a list of bits as an @'Integral'@.
 
@@ -95,7 +106,7 @@ note(s):
 -}
 {-# INLINE fromBits #-}
 fromBits :: forall a . (Integral a, FiniteBits a) => [Bool] -> a
-fromBits xs = foldl' (.|.) 0 . fmap f . zip [0 .. bitCount a] $ xs
+fromBits = foldl' (.|.) 0 . fmap f . zip [0 .. pred $ bitCount a]
     where
         f :: (Int, Bool) -> a
         f (n, b) = if b then bit n else 0
@@ -105,26 +116,26 @@ fromBits xs = foldl' (.|.) 0 . fmap f . zip [0 .. bitCount a] $ xs
 
 === __Examples:__
 
->>> toBytes (0xffff :: Word32)
-
+>>> toBytes (65535 :: Word32)
+[255,255,0,0]
 -}
 {-# INLINE toBytes #-}
 toBytes :: forall a . (Integral a, FiniteBits a) => a -> [Word8]
-toBytes n = fmap (\ i -> view (byteAt i) n) [0 .. byteCount a]
+toBytes n = fmap (\ i -> view (byteAt i) n) [0 .. pred $ byteCount a]
 
 {- | Pack a list of bytes as an @'Integral'@.
 
 === __Examples:__
 
 >>> fromBytes [0xff,0xff] :: Word32
-
+65535
 -}
 {-# INLINE fromBytes #-}
 fromBytes :: forall a . (Integral a, FiniteBits a) => [Word8] -> a
-fromBytes xs = foldl' (.|.) 0 . fmap f . zip [0 .. byteCount a] $ xs
+fromBytes = foldl' (.|.) 0 . fmap f . zip [0 .. pred $ byteCount a]
     where
         f :: (Int, Word8) -> a
-        f (i, m) = shiftL (fromIntegral @Word8 @a m) i
+        f (i, m) = shiftL (fromIntegral @Word8 @a m) (8 * i)
 
 
 {- | Generic bit flag lens.
