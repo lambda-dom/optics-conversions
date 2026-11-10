@@ -5,6 +5,9 @@ Optics for conversions from types with @'Bits'@ constraints.
 -}
 
 module Data.Bits.Optics (
+    -- * Bit utilities.
+    bitCount,
+
     -- * Lenses for types with a 'Bits' constraint.
     bitAt,
     byteAt,
@@ -23,7 +26,7 @@ module Data.Bits.Optics (
 
 -- Imports.
 -- Base.
-import Data.Bits (Bits (..))
+import Data.Bits (Bits (..), FiniteBits (..))
 import Data.Word (Word8, Word16, Word32, Word64)
 
 -- Libraries.
@@ -35,6 +38,11 @@ import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
 
 -- $setup
 -- >>> import Optics.Core
+
+
+{- | Return the number of bits in @'FiniteBits' a => a@. -}
+bitCount :: forall a -> FiniteBits a => Int
+bitCount a = finiteBitSize @a zeroBits
 
 
 {- | Generic bit flag lens.
