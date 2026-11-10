@@ -1,2 +1,7 @@
 packages:
     ./optics-conversions.cabal
+
+source-repository-package
+    type: git
+    location: https://github.com/lambda-dom/mono
+    tag: 8b6b53aa435ccf3fd7a4649140e220fb5e717802
