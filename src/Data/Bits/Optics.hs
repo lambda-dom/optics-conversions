@@ -84,7 +84,7 @@ byteCount a = bitCount a `quot` 8
 
 === __Examples:__
 
->>> toBits (0x0f :: Word8)
+>>> toBits (15 :: Word8)
 [True,True,True,True,False,False,False,False]
 -}
 {-# INLINE toBits #-}
