@@ -5,9 +5,23 @@ Optics for conversions from types with @'Bits'@ constraints.
 -}
 
 module Data.Bits.Optics (
+    -- * Bit utilities.
+    bitCount,
+    byteCount,
+
+    -- ** List functions.
+    toBits,
+    fromBits,
+    toBytes,
+    fromBytes,
+
     -- * Lenses for types with a 'Bits' constraint.
     bitAt,
     byteAt,
+
+    -- * Traversals for types with a 'FiniteBits' constraint.
+    bits,
+    bytes,
 
     -- * Isomorphisms for types with a 'Bits' constraint.
     bitsLe,
@@ -23,18 +37,105 @@ module Data.Bits.Optics (
 
 -- Imports.
 -- Base.
-import Data.Bits (Bits (..))
+import Data.Bits (Bits (..), FiniteBits (..))
 import Data.Word (Word8, Word16, Word32, Word64)
 
 -- Libraries.
-import Optics.Core (Lens', Iso', lens, iso, view, set, review)
+import Optics.Core (Lens', Iso', Traversal', lens, iso, view, set, review, traversalVL)
 
 -- Package.
 import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
 
 
 -- $setup
+-- >>> import Data.Word
 -- >>> import Optics.Core
+
+
+{- | Return the number of bits in @'FiniteBits' a => a@.
+
+=== __Examples:__
+
+>>> bitCount Word32
+32
+-}
+{-# INLINE bitCount #-}
+bitCount :: forall a -> FiniteBits a => Int
+bitCount a = finiteBitSize @a zeroBits
+
+{- | Return the number of bytes in @'FiniteBits' a => a@.
+
+note(s):
+
+    * Defined as @byteCount a = bitCount a `quot` 8@. Implicitly, the number of bits in @a@ must be
+    a multiple of @8@.
+
+=== __Examples:__
+
+>>> byteCount Word32
+4
+-}
+{-# INLINE byteCount #-}
+byteCount :: forall a -> FiniteBits a => Int
+byteCount a = bitCount a `quot` 8
+
+
+{- | Return the list of bits in little-endian order.
+
+=== __Examples:__
+
+>>> toBits (15 :: Word8)
+[True,True,True,True,False,False,False,False]
+-}
+{-# INLINE toBits #-}
+toBits :: forall a . FiniteBits a => a -> [Bool]
+toBits n = fmap (\ i -> view (bitAt i) n) [0 .. pred $ bitCount a]
+
+{- | Pack a list of bits as an @'Integral'@.
+
+note(s):
+
+    * Any elements in the list beyond the 'bitCount' are discarded. Because of this 'fromBits' is
+    not a right-inverse to 'toBits'. It is neither a right inverse because trailing 'False' are
+    not required.
+
+=== __Examples:__
+
+>>> fromBits [True,True,True,True] :: Word8
+15
+-}
+{-# INLINE fromBits #-}
+fromBits :: forall a . (Integral a, FiniteBits a) => [Bool] -> a
+fromBits = foldl' (.|.) 0 . fmap f . zip [0 .. pred $ bitCount a]
+    where
+        f :: (Int, Bool) -> a
+        f (n, b) = if b then bit n else 0
+
+
+{- | Return the list of bits in little-endian order.
+
+=== __Examples:__
+
+>>> toBytes (65535 :: Word32)
+[255,255,0,0]
+-}
+{-# INLINE toBytes #-}
+toBytes :: forall a . (Integral a, FiniteBits a) => a -> [Word8]
+toBytes n = fmap (\ i -> view (byteAt i) n) [0 .. pred $ byteCount a]
+
+{- | Pack a list of bytes as an @'Integral'@.
+
+=== __Examples:__
+
+>>> fromBytes [0xff,0xff] :: Word32
+65535
+-}
+{-# INLINE fromBytes #-}
+fromBytes :: forall a . (Integral a, FiniteBits a) => [Word8] -> a
+fromBytes = foldl' (.|.) 0 . fmap f . zip [0 .. pred $ byteCount a]
+    where
+        f :: (Int, Word8) -> a
+        f (i, m) = shiftL (fromIntegral @Word8 @a m) (8 * i)
 
 
 {- | Generic bit flag lens.
@@ -73,6 +174,23 @@ byteAt i = lens project update
 
         update :: a -> Word8 -> a
         update n w = let m = shiftL (fromIntegral w) (8 * i) in (n .&. complement m) .|. m
+
+
+{- | Bit traversal for integral types with a 'FiniteBits' constraint. -}
+{-# INLINE bits #-}
+bits :: forall a . (Integral a, FiniteBits a) => Traversal' a Bool
+bits = traversalVL h
+    where
+        h :: forall f . Applicative f => (Bool -> f Bool) -> a -> f a
+        h f = fmap fromBits . sequenceA . fmap f . toBits
+
+{- | Byte traversal for integral types with a 'FiniteBits' constraint. -}
+{-# INLINE bytes #-}
+bytes :: forall a . (Integral a, FiniteBits a) => Traversal' a Word8
+bytes = traversalVL h
+    where
+        h :: forall f . Applicative f => (Word8 -> f Word8) -> a -> f a
+        h f = fmap fromBytes . sequenceA . fmap f . toBytes
 
 
 {- | Isomorphism between t'Word8' and 8-tuples of 'Bool' in little-endian order.
