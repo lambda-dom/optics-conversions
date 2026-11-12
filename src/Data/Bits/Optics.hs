@@ -10,16 +10,16 @@ module Data.Bits.Optics (
     byteCount,
 
     -- ** List functions.
-    toBits,
-    fromBits,
-    toBytes,
-    fromBytes,
+    toIxBits,
+    fromIxBits,
+    toIxBytes,
+    fromIxBytes,
 
     -- * Lenses for types with a 'Bits' constraint.
     bitAt,
     byteAt,
 
-    -- * Traversals for types with a 'FiniteBits' constraint.
+    -- * Indexed traversals for types with a 'FiniteBits' constraint.
     bits,
     bytes,
 
@@ -41,7 +41,7 @@ import Data.Bits (Bits (..), FiniteBits (..))
 import Data.Word (Word8, Word16, Word32, Word64)
 
 -- Libraries.
-import Optics.Core (Lens', Iso', Traversal', lens, iso, view, set, review, traversalVL)
+import Optics.Core (Lens', Iso', IxTraversal', lens, iso, view, set, review, itraversalVL)
 
 -- Package.
 import Data.Word.Optics (word8ToWord16, word8ToWord32, word8ToWord64)
@@ -80,33 +80,33 @@ byteCount :: forall a -> FiniteBits a => Int
 byteCount a = bitCount a `quot` 8
 
 
-{- | Return the list of bits in little-endian order.
+{- | Return the enumerated list of bits in little-endian order.
 
 === __Examples:__
 
->>> toBits (15 :: Word8)
-[True,True,True,True,False,False,False,False]
+>>> toIxBits (15 :: Word8)
+[(0,True),(1,True),(2,True),(3,True),(4,False),(5,False),(6,False),(7,False)]
 -}
-{-# INLINE toBits #-}
-toBits :: forall a . FiniteBits a => a -> [Bool]
-toBits n = fmap (\ i -> view (bitAt i) n) [0 .. pred $ bitCount a]
+{-# INLINE toIxBits #-}
+toIxBits :: forall a . FiniteBits a => a -> [(Int, Bool)]
+toIxBits n = fmap (\ i -> (i, view (bitAt i) n)) [0 .. pred $ bitCount a]
 
 {- | Pack a list of bits as an @'Integral'@.
 
 note(s):
 
-    * Any elements in the list beyond the 'bitCount' are discarded. Because of this 'fromBits' is
-    not a right-inverse to 'toBits'. It is neither a right inverse because trailing 'False' are
-    not required.
+    * Any elements in the list with index out of bounds are effectively discarded. Because of this
+    'fromIxBits' is not a right-inverse to 'toIxBits'. It is neither a right inverse because
+    trailing 'False' pairs are not required.
 
 === __Examples:__
 
->>> fromBits [True,True,True,True] :: Word8
+>>> fromIxBits [(0, True),(1, True),(2, True),(3, True)] :: Word8
 15
 -}
-{-# INLINE fromBits #-}
-fromBits :: forall a . (Integral a, FiniteBits a) => [Bool] -> a
-fromBits = foldl' (.|.) 0 . fmap f . zip [0 .. pred $ bitCount a]
+{-# INLINE fromIxBits #-}
+fromIxBits :: forall a . (Integral a, FiniteBits a) => [(Int, Bool)] -> a
+fromIxBits = foldl' (.|.) 0 . fmap f
     where
         f :: (Int, Bool) -> a
         f (n, b) = if b then bit n else 0
@@ -116,23 +116,23 @@ fromBits = foldl' (.|.) 0 . fmap f . zip [0 .. pred $ bitCount a]
 
 === __Examples:__
 
->>> toBytes (65535 :: Word32)
-[255,255,0,0]
+>>> toIxBytes (65535 :: Word32)
+[(0,255),(1,255),(2,0),(3,0)]
 -}
-{-# INLINE toBytes #-}
-toBytes :: forall a . (Integral a, FiniteBits a) => a -> [Word8]
-toBytes n = fmap (\ i -> view (byteAt i) n) [0 .. pred $ byteCount a]
+{-# INLINE toIxBytes #-}
+toIxBytes :: forall a . (Integral a, FiniteBits a) => a -> [(Int, Word8)]
+toIxBytes n = fmap (\ i -> (i, view (byteAt i) n)) [0 .. pred $ byteCount a]
 
 {- | Pack a list of bytes as an @'Integral'@.
 
 === __Examples:__
 
->>> fromBytes [0xff,0xff] :: Word32
+>>> fromIxBytes [(0, 0xff),(1, 0xff)] :: Word32
 65535
 -}
-{-# INLINE fromBytes #-}
-fromBytes :: forall a . (Integral a, FiniteBits a) => [Word8] -> a
-fromBytes = foldl' (.|.) 0 . fmap f . zip [0 .. pred $ byteCount a]
+{-# INLINE fromIxBytes #-}
+fromIxBytes :: forall a . (Integral a, FiniteBits a) => [(Int, Word8)] -> a
+fromIxBytes = foldl' (.|.) 0 . fmap f
     where
         f :: (Int, Word8) -> a
         f (i, m) = shiftL (fromIntegral @Word8 @a m) (8 * i)
@@ -176,21 +176,21 @@ byteAt i = lens project update
         update n w = let m = shiftL (fromIntegral @Word8 @a w) (8 * i) in (n .&. complement m) .|. m
 
 
-{- | Bit traversal for integral types with a 'FiniteBits' constraint. -}
+{- | Indexed bit traversal for integral types with a 'FiniteBits' constraint. -}
 {-# INLINE bits #-}
-bits :: forall a . (Integral a, FiniteBits a) => Traversal' a Bool
-bits = traversalVL h
+bits :: forall a . (Integral a, FiniteBits a) => IxTraversal' Int a Bool
+bits = itraversalVL h
     where
-        h :: forall f . Applicative f => (Bool -> f Bool) -> a -> f a
-        h f = fmap fromBits . sequenceA . fmap f . toBits
+        h :: forall f . Applicative f => (Int -> Bool -> f Bool) -> a -> f a
+        h f = fmap fromIxBits . sequenceA . fmap (\ (i, n) -> fmap (i, ) $ f i n) . toIxBits
 
-{- | Byte traversal for integral types with a 'FiniteBits' constraint. -}
+{- | Indexed byte traversal for integral types with a 'FiniteBits' constraint. -}
 {-# INLINE bytes #-}
-bytes :: forall a . (Integral a, FiniteBits a) => Traversal' a Word8
-bytes = traversalVL h
+bytes :: forall a . (Integral a, FiniteBits a) => IxTraversal' Int a Word8
+bytes = itraversalVL h
     where
-        h :: forall f . Applicative f => (Word8 -> f Word8) -> a -> f a
-        h f = fmap fromBytes . sequenceA . fmap f . toBytes
+        h :: forall f . Applicative f => (Int -> Word8 -> f Word8) -> a -> f a
+        h f = fmap fromIxBytes . sequenceA . fmap (\ (i, n) -> fmap (i, ) $ f i n) . toIxBytes
 
 
 {- | Isomorphism between t'Word8' and 8-tuples of 'Bool' in little-endian order.
