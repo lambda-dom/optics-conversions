@@ -91,7 +91,7 @@ byteCount a = bitCount a `quot` 8
 toIxBits :: forall a . FiniteBits a => a -> [(Int, Bool)]
 toIxBits n = fmap (\ i -> (i, view (bitAt i) n)) [0 .. pred $ bitCount a]
 
-{- | Pack a list of bits as an @'Integral'@.
+{- | Pack a list of indexed bits as an @'Integral'@.
 
 note(s):
 
@@ -112,7 +112,7 @@ fromIxBits = foldl' (.|.) 0 . fmap f
         f (n, b) = if b then bit n else 0
 
 
-{- | Return the list of bits in little-endian order.
+{- | Return the enumerated list of bytes in little-endian order.
 
 === __Examples:__
 
@@ -123,7 +123,7 @@ fromIxBits = foldl' (.|.) 0 . fmap f
 toIxBytes :: forall a . (Integral a, FiniteBits a) => a -> [(Int, Word8)]
 toIxBytes n = fmap (\ i -> (i, view (byteAt i) n)) [0 .. pred $ byteCount a]
 
-{- | Pack a list of bytes as an @'Integral'@.
+{- | Pack a list of indexed bytes as an @'Integral'@.
 
 === __Examples:__
 
